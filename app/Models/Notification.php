@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Notification extends Model
 {
     protected $fillable = [
-        'recepteur_id',
+        'employe_id',
         'type',
         'message',
-        'demande_id',
+        'demande_conge_id',
     ];
 
     public function demandes_conges() {

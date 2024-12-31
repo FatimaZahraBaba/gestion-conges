@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 class Employe extends Model
 {
     protected $fillable = [
-        'nom',
+        'nom_complet',
         'email',
         'password',
         'poste',

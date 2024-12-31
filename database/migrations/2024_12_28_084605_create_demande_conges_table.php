@@ -15,12 +15,34 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employe_id')->constrained()->onDelete('cascade');
             $table->integer('nbr_jours_demandes');
-            $table->string('motif_conge');
+            $table->enum('motif_conge', [
+                'vacances',
+                'maladie',
+                'congé maternité',
+                'congé paternité',
+                'congé évènement familial',
+                'congé naissance enfant',
+                'congé sabbatique',
+                'congé formation',
+                'congé personnel',
+                'congé voyage affaires',
+                'congé sante mentale',
+                'congé fin année',
+                'congé déménagement',
+                'congé mariage',
+                'congé adoption',
+                'congé études',
+                'congé sans solde',
+                'congé deuil',
+                'congé solidarité familiale',
+                'congé religieux',
+
+            ])->default('vacances');
             $table->date('date_debut');
             $table->date('date_fin');
             $table->enum('statut', ['en_attente', 'accepte', 'refuse'])->default('en_attente');
             $table->timestamps();
-        
+
         });
     }
 
