@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeController extends Controller
 {
@@ -17,52 +18,66 @@ class EmployeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        
-    
+        $validated = $request->validate([
+            'prenom' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
+            'email' => 'required|email|unique:employes,email',
+            'password' => 'required|string',
+            'poste' => 'required|string',
+            'solde_conge' => 'required|integer|max:18',
+            'date_embauche' => 'required|date',
+            'is_admin' => 'required|boolean',
+        ]);
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        $employe = Employe::create($validated);
+
+        return response()->json($employe);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Employe $employe)
+    public function show(string $id)
     {
-        $employe = Employe::find(1);
+        $employe = Employe::findOrFail($id);
         return response()->json($employe);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Employe $employe)
-    {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Employe $employe)
+    public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'nom_complet' => 'required|string|max:255',
+            'email' => 'required|email|unique:employes,email',
+            'password' => 'required|string',
+            'poste' => 'required|string',
+            'solde_conge' => 'required|integer|max:18',
+            'date_embauche' => 'required|date',
+            'is_admin' => 'required|boolean',
+        ]);
+
+        // $validated['password'] = Hash::make($validated['password']);
+
+        $employe = Employe::findOrFail($id);
+        $employe->update($validated);
+        return response()->json($employe);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employe $employe)
+    public function destroy(string $id)
     {
-        //
+        $employe = Employe::findOrFail($id);
+        $employe->delete();
+        return response()->json(['message' => 'Employee deleted successfully!']);
     }
 }

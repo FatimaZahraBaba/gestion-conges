@@ -17,50 +17,46 @@ class DemandeCongeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        // $demandeConge = DemandeConge::create($data);
+        $demandeConge = $request->employe()->demandes_conges()->create($data);
+        return response()->json([
+            'message' => 'Demande de congé crée avec succès.',
+            'demande_conge' => $demandeConge
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(DemandeConge $demandeConge)
+    public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DemandeConge $demandeConge)
-    {
-        //
+        $demandeConge = DemandeConge::findOrFail($id);
+        return response()->json($demandeConge);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DemandeConge $demandeConge)
+    public function update(Request $request, string $id)
     {
-        //
+        $data = $request->all();
+        $demandeConge = DemandeConge::findOrFail($id);
+        $demandeConge->update($data);
+        return response()->json($demandeConge);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DemandeConge $demandeConge)
+    public function destroy(string $id)
     {
-        //
+        $demandeConge = DemandeConge::findOrFail($id);
+        $demandeConge->delete();
+        return response()->json(data: ['message' => 'Leave request deleted successfully!']);
     }
 }

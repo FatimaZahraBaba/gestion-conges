@@ -17,50 +17,44 @@ class NotificationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $notification = Notification::create($data);
+
+        return response()->json($notification);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Notification $notification)
+    public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Notification $notification)
-    {
-        //
+        $notification = Notification::findOrFail($id);
+        return response()->json($notification);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Notification $notification)
+    public function update(Request $request, string $id)
     {
-        //
+        $data = $request->all();
+        $notification = Notification::findOrFail($id);
+        $notification->update($data);
+        return response()->json($notification);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Notification $notification)
+    public function destroy(string $id)
     {
-        //
+        $notification = Notification::findOrFail($id);
+        $notification->delete();
+        return response()->json(data: ['message' => 'Notification deleted successfully!']);
+
     }
 }
